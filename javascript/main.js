@@ -145,3 +145,112 @@ const indicator = (id) => {
 
 
 
+function labels_display(arr){
+  const new_arr = arr.map(el => {
+    let color = "bg-gray-100";
+
+    if(el==="bug"){
+      color="bg-red-100 badge-error";
+    }
+    else if(el==="help wanted"){
+      color="bg-yellow-100 badge-warning";
+    }
+    else if(el==="good first issue" || el==="enhancement"){
+      color="bg-green-100 badge-success";
+    }
+    else if(el==="documentation"){
+       color="bg-purple-100 badge-primary";
+    }
+
+    return`<span class="badge badge-outline ${color}">
+      ${el}
+    </span>`;
+  });
+
+  return new_arr.join(" ");
+}
+
+
+document.getElementById("input_issue").addEventListener("input", () => {
+
+  let input = document.getElementById("input_issue").value.trim().toLowerCase();
+  console.log(input);
+
+
+  if(input === ""){
+    load_data(allissues);
+    return;
+  }
+
+spin(true);
+
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${input}`)
+    .then(res => res.json())
+    .then(data => {
+      load_data(data.data);
+    });
+
+});
+
+
+
+
+const info = (id) => {
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      issues = data.data;
+    showModalInfo(issues);
+    })
+ 
+};
+
+
+
+function showModalInfo(issue) {
+
+document.getElementById('modal_info').innerHTML = `
+    <h2 class="text-2xl font-bold text-slate-900 mb-4">${issue.title}</h2>
+
+<div class="flex flex-wrap items-center gap-4 text-gray-500 mb-6">
+
+  <span class="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2 ${issue.status === 'open' ? 'bg-emerald-500 text-white' : 'bg-purple-500 text-white'}">
+  ${issue.status}
+  </span>
+
+
+  <span>Opened by <span class="font-medium text-gray-800">${issue.author}</span></span>
+
+
+  <span class="text-sm">${issue.updatedAt}</span>
+</div>
+
+<div class="flex flex-wrap gap-3 mb-6">
+  ${labels_display(issue.labels)}
+</div>
+
+<p class="text-gray-700 text-base leading-relaxed mb-8">
+  ${issue.description || 'No description provided.'}
+</p>
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-100 rounded-xl">
+
+  <div>
+    <h4 class="text-gray-600 text-sm mb-1">Assignee:</h4>
+    <p class="text-gray-900 font-semibold text-lg">${issue.assignee || issue.author}</p>
+  </div>
+
+
+  <div>
+    <h4 class="text-gray-600 text-sm mb-1">Priority:</h4>
+    <span class="inline-block px-4 py-1 rounded-full text-sm font-semibold uppercase tracking-wider ${
+      issue.priority === 'high' ? 'bg-red-100 text-red-600' :
+      issue.priority === 'medium' ? 'bg-yellow-100 text-yellow-400' :
+      'bg-gray-300 text-gray-800'
+    }">
+      ${issue.priority}
+    </span>
+  </div>
+</div>`
+}
