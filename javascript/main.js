@@ -105,3 +105,43 @@ modal.showModal();
  spin(false);
 }
 
+window.addEventListener("DOMContentLoaded", all_data);
+
+document.getElementById("all_btn").addEventListener("click",()=>{
+all_data(); 
+
+})
+
+
+
+
+document.getElementById("open_btn").addEventListener("click",()=>{
+  spin(true)
+const open_issue=allissues.filter(open=>open.status==="open")
+ load_data(open_issue);
+})
+
+
+document.getElementById("close_btn").addEventListener("click",()=>{
+  spin(true)
+const close_issue=allissues.filter(close=>close.status==="closed")
+
+ load_data(close_issue);
+})
+
+
+
+const indicator = (id) => {
+  document.querySelectorAll("#all_btn, #open_btn, #close_btn").forEach(btn => {
+    btn.classList.remove("bg-primary", "text-white");
+    btn.classList.add("bg-white", "text-black");
+  });
+
+  const btn = document.getElementById(id);
+  btn.classList.remove("bg-white", "text-black");
+  btn.classList.add("bg-primary", "text-white");   
+};
+
+
+
+
