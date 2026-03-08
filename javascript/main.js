@@ -26,3 +26,82 @@ const spin=(status)=>{
 }
 
  
+
+const load_data=(data)=>{
+const mother=document.getElementById("card_sec")
+mother.innerHTML=""
+
+const display_Num=document.getElementById("display_number")
+display_Num.innerHTML=`
+<h1 class="font-semibold text-2xl">${data.length} Issues</h1>
+    <p class="text-[#64748B]">Track and manage your project issues</p>
+`
+data.forEach(element => {
+  
+
+    let border_color="border-green-500"
+    let icon=""
+    if(element.status=="open"){
+      border_color="border-green-500"
+icon="Open-Status.png"
+
+    }
+    else{
+       border_color="border-purple-500"
+       icon="Closed-Status.png"
+    }
+
+let priority="green"
+
+if(element.priority==="high"){
+  priority="red"
+}
+else if(element.priority==="medium"){
+  priority="yellow"
+}
+else{
+  priority="gray"
+}
+
+
+
+    const child_card_sec=document.createElement("div");
+    child_card_sec.className=`bg-white rounded-lg shadow p-5 flex flex-col justify-between border-t-4 cursor-pointer ${border_color}`
+
+
+const modal = document.getElementById("my_modal_5");
+    child_card_sec.addEventListener("click",()=>{
+info(element.id);
+modal.showModal();
+
+    })
+
+
+    child_card_sec.innerHTML=`
+        <div class="flex justify-between items-start">
+        <img src="./assets/${icon}" alt="">
+    <span class="text-sm md:text-base font-semibold text-${priority}-700 bg-${priority}-100 px-3 py-1.5 rounded-2xl shadow-sm hover:bg-green-200 transition-all duration-300">
+  ${element.priority}
+</span>
+    </div>
+    <h2 class="text-md font-semibold mt-2">${element.title}</h2>
+    <p class="text-gray-500 text-sm mt-1">${element.description}</p>
+    <div class="flex flex-wrap gap-2 my-3">
+    ${labels_display(element.labels)}
+    </div>
+    <hr class=" opacity-20">
+    <div class=" text-gray-500 text-sm mt-3 space-y-3">
+      <p>#${element.author}</p>
+      <p>${element.updatedAt}</p>
+    </div>
+    
+    `
+   mother.appendChild(child_card_sec);
+
+    
+    
+});
+
+ spin(false);
+}
+
