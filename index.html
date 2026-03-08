@@ -25,10 +25,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Github Issue Tracker/sign up</title>
 </head>
-<body>
-  <h1>starting</h1>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
 
 
+ <div class="w-full max-w-md p-8 bg-white border border-gray-300 rounded-xl shadow-xl ">
+    <header class="text-center mb-6">
+      <img src="./assets/github-logo.png" alt="GitHub Logo" class="w-16 h-16 mx-auto mb-4">
+      <h1 class="text-2xl font-semibold">GitHub Issues Tracker</h1>
+      <p class="text-gray-500 mt-2 text-[16px] font-normal">Sign in to manage your issues</p>
+    </header>
+
+  
+    <fieldset class="fieldset">
+    <legend class="fieldset-legend text-[#1F2937] text-[16px] font-medium">Username</legend>
+    <input id="username" type="text"  class="input w-full" placeholder="Enter your username" autocomplete="off"/>
+    <p class="text-sm text-[#4A00FF] mt-1">Default: admin</p>
+</fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend text-[#1F2937] text-[16px] font-medium">Password</legend>
+        <input id="password" type="password"  class="input w-full" placeholder="Enter your password" />
+        <p class="text-sm text-[#4A00FF] mt-1">Default: admin123</p>
+      </fieldset>
+
+      <button  onclick="signin()" class="btn btn-primary bg-[#4A00FF] border-none w-full">Sign In</button>
+<div class="flex items-center my-4">
+  <div class="flex-grow border-t border-gray-300"></div>
+  <span class="px-4 text-gray-500">OR</span>
+  <div class="flex-grow border-t border-gray-300"></div>
+   
+</div>
+ <h3 class="opacity-40 text-center">Demo Cardinals</h3>
+  
+      <div class="bg-gray-200 p-5 rounded-xl mt-5 text-center">
+      
+        <p><span class="font-semibold">Username:</span> admin</p>
+        <p><span class="font-semibold">Password:</span> admin123</p>
+
+      </div>
+    
+  </div>
 
 
 
