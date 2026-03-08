@@ -1,17 +1,18 @@
 let allissues = [];
 
-    // fecthing all data api
-    const all_data=()=>{
-
-      spin(true);
-        const url=fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-        .then((res)=>res.json())
-        .then(data=>{
-          allissues=data.data
-          load_data(allissues)
-        });
-       
-    }
+    const all_data = () => {
+  spin(true);
+  fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then(res => res.json())
+    .then(data => {
+      allissues = data.data;
+      load_data(allissues); // show all cards by default
+    })
+    .catch(err => {
+      console.error("Failed to fetch issues:", err);
+      spin(false);
+    });
+};
 
     // spinner
 const spin=(status)=>{
@@ -26,6 +27,76 @@ const spin=(status)=>{
 }
 
  
+
+
+
+window.addEventListener("DOMContentLoaded", all_data);
+
+document.getElementById("all_btn").addEventListener("click",()=>{
+all_data(); 
+
+})
+
+
+
+
+document.getElementById("open_btn").addEventListener("click",()=>{
+  spin(true)
+const open_issue=allissues.filter(open=>open.status==="open")
+ load_data(open_issue);
+})
+
+
+document.getElementById("close_btn").addEventListener("click",()=>{
+  spin(true)
+const close_issue=allissues.filter(close=>close.status==="closed")
+
+ load_data(close_issue);
+})
+
+
+
+const indicator = (id) => {
+  document.querySelectorAll("#all_btn, #open_btn, #close_btn").forEach(btn => {
+    btn.classList.remove("bg-primary", "text-white");
+    btn.classList.add("bg-white", "text-black");
+  });
+
+  const btn = document.getElementById(id);
+  btn.classList.remove("bg-white", "text-black");
+  btn.classList.add("bg-primary", "text-white");   
+};
+
+
+
+
+function labels_display(arr){
+  const new_arr = arr.map(el => {
+    let color = "bg-gray-100";
+
+    if(el==="bug"){
+      color="bg-red-100 badge-error";
+    }
+    else if(el==="help wanted"){
+      color="bg-yellow-100 badge-warning";
+    }
+    else if(el==="good first issue" || el==="enhancement"){
+      color="bg-green-100 badge-success";
+    }
+    else if(el==="documentation"){
+       color="bg-purple-100 badge-primary";
+    }
+
+    return`<span class="badge badge-outline ${color}">
+      ${el}
+    </span>`;
+  });
+
+  return new_arr.join(" ");
+}
+
+
+
 
 const load_data=(data)=>{
 const mother=document.getElementById("card_sec")
@@ -105,70 +176,7 @@ modal.showModal();
  spin(false);
 }
 
-window.addEventListener("DOMContentLoaded", all_data);
 
-document.getElementById("all_btn").addEventListener("click",()=>{
-all_data(); 
-
-})
-
-
-
-
-document.getElementById("open_btn").addEventListener("click",()=>{
-  spin(true)
-const open_issue=allissues.filter(open=>open.status==="open")
- load_data(open_issue);
-})
-
-
-document.getElementById("close_btn").addEventListener("click",()=>{
-  spin(true)
-const close_issue=allissues.filter(close=>close.status==="closed")
-
- load_data(close_issue);
-})
-
-
-
-const indicator = (id) => {
-  document.querySelectorAll("#all_btn, #open_btn, #close_btn").forEach(btn => {
-    btn.classList.remove("bg-primary", "text-white");
-    btn.classList.add("bg-white", "text-black");
-  });
-
-  const btn = document.getElementById(id);
-  btn.classList.remove("bg-white", "text-black");
-  btn.classList.add("bg-primary", "text-white");   
-};
-
-
-
-
-function labels_display(arr){
-  const new_arr = arr.map(el => {
-    let color = "bg-gray-100";
-
-    if(el==="bug"){
-      color="bg-red-100 badge-error";
-    }
-    else if(el==="help wanted"){
-      color="bg-yellow-100 badge-warning";
-    }
-    else if(el==="good first issue" || el==="enhancement"){
-      color="bg-green-100 badge-success";
-    }
-    else if(el==="documentation"){
-       color="bg-purple-100 badge-primary";
-    }
-
-    return`<span class="badge badge-outline ${color}">
-      ${el}
-    </span>`;
-  });
-
-  return new_arr.join(" ");
-}
 
 
 document.getElementById("input_issue").addEventListener("input", () => {
